@@ -1,0 +1,229 @@
+\documentclass[12pt, a4paper, oneside, openright]{thesis}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+
+\usepackage[english, spanish, catalan]{babel}
+\usepackage[catalan]{translator}
+
+\usepackage[style=bibstyles/myieee,backref=true,backend=biber]{biblatex}
+\input{bib}
+
+\usepackage[toc, acronyms]{glossaries}
+
+\makeglossaries
+\loadglsentries{abbrevs}
+
+% comments
+\usepackage{verbatim}
+
+\usepackage{blindtext}
+\usepackage{lipsum}
+
+\usepackage{listing}
+\usepackage[section, outputdir=build]{minted}
+
+\usepackage{tcolorbox}
+\tcbuselibrary{minted,skins}
+
+\newtcblisting{pythoncode}{
+	listing engine=minted,
+	colback=bg,
+	colframe=black!70,
+	listing only,
+	minted style=monokai,
+	minted language=python,
+	minted options={linenos=true,texcl=true},
+	left=1mm,
+}
+\definecolor{bg}{HTML}{282828}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% AMS MATH %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsmath}        % loads amstext, amsbsy, amsopn but not amssymb
+                            % equation stuff (eqref, subequations, equation, align, gather, flalign, multline, alignat, split...)
+% \usepackage{amsfonts}     % may be redundant with amsmath
+% \usepackage{amssymb}      % may be redundant with amsmath
+% \numberwithin{equation}{section}  % reset equation counters at start of each "section" and prefix numbers by section number
+% \numberwithin{figure}{section}    % reset figure   counters at start of each "section" and prefix numbers by section number
+
+\usepackage{tikz}
+\usetikzlibrary{matrix,chains,positioning,decorations.pathreplacing,arrows,intersections}
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{fillbetween}
+
+\usepackage{graphicx}
+\graphicspath{ 
+	{cap5/img/}
+	{cap3/img/}
+}
+
+\usepackage{neuralnetwork}
+
+\usepackage{caption}
+\usepackage{subcaption}
+
+\usepackage{float}
+
+\usepackage{algpseudocode, algorithm, algorithmicx}
+
+\usepackage[
+  pdfauthor={Stepan Klymonchuk},
+  pdftitle={Intel.ligència Artificial},
+  colorlinks=true,
+  linktocpage=false,
+  hyperindex=true,
+  linkcolor=.,
+  urlcolor=blue,
+  citecolor=green,
+  anchorcolor=red,
+  filecolor=magenta,
+  bookmarks=true,
+  hypertexnames=true,
+  pdfencoding=auto
+]{hyperref}
+
+\usepackage{bookmark}
+\usepackage[all]{hypcap}
+
+\usepackage{cleveref}
+
+% red references
+\let\oldcref\cref
+\renewcommand{\cref}[1]{\hypersetup{linkcolor=red}\oldcref{#1}\hypersetup{linkcolor=.}}%<<<changed
+
+% red page references
+\let\oldprintbibliography\printbibliography
+\renewcommand{\printbibliography}[1][]{\hypersetup{linkcolor=red}\oldprintbibliography[#1]\hypersetup{linkcolor=.}}%<<<changed
+
+\usepackage[toc,page,title,titletoc]{appendix}
+
+\usepackage[a4paper,margin=2.54cm]{geometry}
+
+% bold vectors
+\let\oldhat\hat
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\renewcommand{\hat}[1]{\oldhat{\mathbf{#1}}}
+
+\setlength{\parindent}{0em}
+\setlength{\parskip}{1em}
+\renewcommand{\baselinestretch}{1.15}
+
+\setbox0=\hbox{\ttfamily}
+
+\renewcommand{\appendixtocname}{Apèndixs}
+\renewcommand{\appendixpagename}{Apèndixs}
+\renewcommand{\appendixname}{Apèndix}
+
+\makeatletter
+\let\oriAlph\Alph
+\let\orialph\alph
+\renewcommand{\@resets@pp}{
+  \par
+  \@ppsavesec
+  \stepcounter{@pps}
+  \setcounter{section}{0}
+  \if@chapter@pp
+    \setcounter{chapter}{0}
+    \renewcommand\@chapapp{\appendixname}
+    \renewcommand\thechapter{\@Alph\c@chapter}
+  \else
+    \setcounter{subsection}{0}
+    \renewcommand\thesection{\@Alph\c@section}
+  \fi
+  \if@pphyper
+    \if@chapter@pp
+      \renewcommand{\theHchapter}{\theH@pps.\oriAlph{chapter}}
+    \else
+      \renewcommand{\theHsection}{\theH@pps.\oriAlph{section}}
+    \fi
+    \def\Hy@chapapp{appendix}
+  \fi
+  \restoreapp
+}
+\makeatother
+
+\begin{document}
+
+\frontmatter
+
+\include{intro/title}
+\newpage
+
+\setcounter{page}{2}
+
+\include{intro/dedication}
+\newpage
+
+%\addtocontents{toc}{\vspace{1em}}
+%\include{intro/acks}
+%\newpage
+
+\include{intro/abstract}
+\addtocontents{toc}{\vspace{1em}}
+\newpage
+
+\include{quotes/quote1}
+\newpage
+
+%\include{intro/index}
+%\newpage
+
+\chapter*{\contentsname}
+\setcounter{chapter}{-1}
+\addcontentsline{toc}{chapter}{\contentsname}
+\tableofcontents*
+
+\chapter*{\listfigurename}
+\setcounter{chapter}{0}
+\addcontentsline{toc}{chapter}{\listfigurename}
+\listoffigures*
+
+%\chapter*{\listtablename}
+%\setcounter{chapter}{0}
+%\addcontentsline{toc}{chapter}{\listtablename}
+%\listoftables*
+
+\renewcommand\listingscaption{Listing}
+\renewcommand{\listlistingname}{Índex de listings}
+
+\listoflistings
+\addcontentsline{toc}{chapter}{\listlistingname}
+
+\renewcommand*{\acronymname}{Abreviacions}
+\printglossary[type=\acronymtype, toctitle=\acronymname]
+
+\addtocontents{toc}{\vspace{1em}}
+
+\newpage
+
+\mainmatter
+
+\include{cap1/cap1}
+\newpage
+
+\include{cap2/cap2}
+\newpage
+
+\include{cap3/cap3}
+\newpage
+
+\include{cap4/cap4}
+\newpage
+
+\include{cap5/cap5}
+\newpage
+
+\include{cap6/cap6}
+\newpage
+
+\begin{appendices}
+	\include{app/ap1}
+	\include{app/ap2}
+
+\end{appendices}
+
+\end{document}

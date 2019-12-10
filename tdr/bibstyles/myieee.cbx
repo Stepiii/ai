@@ -1,0 +1,121 @@
+%% ---------------------------------------------------------------
+%% biblatex-ieee --- A biblatex implementation of the IEEE 
+%%   bibliography style
+%% Maintained by Joseph Wright
+%% E-mail: joseph.wright@morningstar2.co.uk
+%% Released under the LaTeX Project Public License v1.3c or later
+%% See http://www.latex-project.org/lppl.txt
+%% ---------------------------------------------------------------
+%% 
+
+\ProvidesFile{myieee.cbx}
+
+\RequireCitationStyle{ieee}
+
+\usepackage[dvipsnames]{xcolor}
+\colorlet{cite_color}{red}
+%\definecolor{cite_color}{RGB}{12,127,172}
+
+%\usepackage{hyperref}
+%\hypersetup{
+%  colorlinks=true,
+%  citecolor=cite_color
+%}
+
+\newrobustcmd{\mkbibbracketscol}[1]{%
+	\begingroup
+	\blx@blxinit
+	\blx@setsfcodes
+	\bibopenbracket\textcolor{cite_color}{#1}\bibclosebracket
+	\endgroup}
+
+\newrobustcmd{\mkbibsuperscriptcol}[1]{%
+\unspace\allowhyphens\textsuperscript{%
+\begingroup
+\protected\long\def\mkbibsuperscript##1{%
+\blx@warning{Nested superscript}%
+\mkbibbrackets{##1}}%
+#1\endgroup}}
+
+%\newcommand{\mkbibbracketscol}[1]{\textcolor{cite_color}{\mkbibbrackets{#1}}}
+%\newcommand{\mkbibsuperscriptcol}[1]{\textcolor{cite_color}{\mkbibsuperscript{#1}}}
+
+\DeclareCiteCommand{\cite}[\textcolor{cite_color}]
+{\usebibmacro{cite:init}%
+	\bibopenbracket
+	\usebibmacro{prenote}}
+{\usebibmacro{citeindex}%
+	\usebibmacro{cite:comp}}
+{}
+{\usebibmacro{cite:dump}%
+	\usebibmacro{postnote}%
+	\bibclosebracket
+}
+
+\DeclareCiteCommand{\parencite}[\mkbibbracketscol]
+{\usebibmacro{cite:init}%
+	\usebibmacro{prenote}}
+{\usebibmacro{citeindex}%
+	\usebibmacro{cite:comp}}
+{}
+{\usebibmacro{cite:dump}%
+	\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\cbx@textcite}[\textcolor{cite_color}]
+{\usebibmacro{cite:init}}
+{\usebibmacro{citeindex}%
+	\usebibmacro{textcite}}
+{}
+{\usebibmacro{cite:dump}%
+	\usebibmacro{postnote}%
+	\ifbool{cbx:parens}
+	{\bibclosebracket\global\boolfalse{cbx:parens}}
+	{}}
+
+\DeclareCiteCommand{\supercite}[\mkbibsuperscriptcol]
+{\usebibmacro{cite:init}%
+	\let\multicitedelim=\supercitedelim
+	\iffieldundef{prenote}
+	{}
+	{\BibliographyWarning{Ignoring prenote argument}}%
+	\iffieldundef{postnote}
+	{}
+	{\BibliographyWarning{Ignoring postnote argument}}%
+	\bibopenbracket}%
+{\usebibmacro{citeindex}%
+	\usebibmacro{cite:comp}}
+{}
+{\usebibmacro{cite:dump}\bibclosebracket}
+
+\renewbibmacro*{pageref}{%
+	\iflistundef{pageref}
+	{}
+	{\printtext{\addperiod\addspace\printlist[pageref][-\value{listtotal}]{pageref}}}}
+
+
+%% 
+%% Copyright (C) 2011-2013,2015-2018 by
+%%   Joseph Wright <joseph.wright@morningstar2.co.uk>
+%% 
+%% It may be distributed and/or modified under the conditions of
+%% the LaTeX Project Public License (LPPL), either version 1.3c of
+%% this license or (at your option) any later version.  The latest
+%% version of this license is in the file:
+%% 
+%%    http://www.latex-project.org/lppl.txt
+%% 
+%% This work is "maintained" (as per LPPL maintenance status) by
+%%   Joseph Wright.
+%% 
+%% This work consists of the files biblatex-ieee.bib,
+%%                                 biblatex-ieee.tex,
+%%                                 ieee.bbx,
+%%                                 ieee.cbx,
+%%                                 ieee-alphabetic.bbx,
+%%                                 ieee-alphabetic.cbx and
+%%                                 magyar-ieee.lbx,
+%%           and the derived files biblatex-ieee.pdf and
+%%                                 biblatex-ieee-alphabetic.pdf.
+%% 
+%%
+%% End of file `ieee.cbx'.
