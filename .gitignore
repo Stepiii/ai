@@ -1,6 +1,8 @@
 ## Build dir
 tdr/build
 
+.ipynb_checkpoints/
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
